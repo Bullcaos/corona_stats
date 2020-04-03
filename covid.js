@@ -16,12 +16,8 @@ app.get('/latest/:country', (req, res) => {
 
 app.listen(8081, () => {
     console.log('Server started');
+    tracker.updateDatabase();
     setInterval(() => {
-        //TODO get countries from JSON file
-        tracker.downloadData('Spain').then((data) => {
-            console.log('henlo');
-        }).catch((err) => {
-            res.send(err);
-        });
-    }, 1200);
+        tracker.updateDatabase();
+    }, 1000);
 });

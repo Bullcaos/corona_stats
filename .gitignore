@@ -4,3 +4,4 @@
 #NodeJS modules shall not be uploaded
 /node_modules/
 package-lock.json
+history.db
