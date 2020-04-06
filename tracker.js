@@ -5,7 +5,6 @@ var files = require('fs');
 var db = require('./database.js');
 
 function downloadData(country) {
-    console.log('Download ' + country);
     return new Promise((success, reject) => {
         http.get('https://www.trackcorona.live/api/countries/', (resp) => {
             let data = '';
@@ -16,7 +15,6 @@ function downloadData(country) {
                 let json = JSON.parse(data);
                 for(let i = 0; json.code == 200 && i < json.data.length; i++) {
                     if(json.data[i].location.localeCompare(country) == 0) {
-                        console.log('Saved');
                         success(json.data[i]);
                         return true;
                     }
@@ -34,7 +32,6 @@ async function updateDatabase() {
     for(let i = 0; i < countries.length; i++) {
         try {
             let selection = await downloadData(countries[i]);
-            console.log('exited');
             db.insertData(selection.location, selection.dead, selection.recovered,
                 selection.confirmed, selection.updated);
         } catch (error) {
@@ -45,3 +42,4 @@ async function updateDatabase() {
 
 module.exports.downloadData = downloadData;
 module.exports.updateDatabase = updateDatabase;
+module.exports.COUNTRIES_FILE = COUNTRIES_FILE;
