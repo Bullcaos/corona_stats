@@ -15,9 +15,6 @@ function updateData() {
         }
         ajax.send(null);
     });
-    for(let i = 0; i < countries.length; i++) {
-        
-    }
 }
 
 function init() {

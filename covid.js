@@ -1,3 +1,8 @@
+if(process.argv.length < 4){
+    console.log('Required command: node covid.js <ip_binding> <port_binding>');
+    return false;
+}
+
 var express = require('express');
 var app = express();
 var tracker = require('./tracker');
@@ -13,6 +18,14 @@ app.get('/', async (req, res) => {
         title: 'Estadísticas COVID-19',
         countries: JSON.parse(data)
     })
+});
+
+app.get('/country', async (req, res) => {
+    let data = fsys.readFileSync(tracker.COUNTRIES_FILE);
+    res.render('website/overview', {
+        title: 'Estadísticas por países',
+        countries: JSON.parse(data)
+    });
 });
 
 app.get('/list/countries', async (req, res) => {
@@ -56,7 +69,7 @@ app.get('/history/country/:period/:country', async (req, res) => {
     }
 });
 
-app.listen(8081, () => {
+app.listen(process.argv[3], () => {
     console.log('Server started');
     tracker.updateDatabase();
     setInterval(() => {

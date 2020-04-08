@@ -4,7 +4,7 @@
   "description": "COVID-19 real time database",
   "main": "covid.js",
   "scripts": {
-    "test": "node covid.js"
+    "test": "node covid.js localhost 8081"
   },
   "repository": {
     "type": "git",
