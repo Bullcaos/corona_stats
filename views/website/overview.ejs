@@ -5,7 +5,7 @@
     <form method="POST" action="" class="col s12 m6 l4" onsubmit="return false">
         <div class="row">
             <div class="col s12 input-field">
-                <select id="selectCountry">
+                <select id="selectCountry" onchange="loadChartData()">
                     <% countries.forEach((country, index) => { %>
                     <option value="<%= index %>" <% if(index == 0) { %>selected<% } %>><%= country %></option>
                     <% }); %>

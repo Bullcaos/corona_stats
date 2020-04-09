@@ -28,6 +28,14 @@ app.get('/country', async (req, res) => {
     });
 });
 
+app.get('/country/day', async (req, res) => {
+    let data = fsys.readFileSync(tracker.COUNTRIES_FILE);
+    res.render('website/daily', {
+        title: 'Estadística diaria',
+        countries: JSON.parse(data)
+    });
+});
+
 app.get('/list/countries', async (req, res) => {
     res.append('Content-Type', 'application/json');
     res.send(fsys.readFileSync(tracker.COUNTRIES_FILE));

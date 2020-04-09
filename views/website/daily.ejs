@@ -1,0 +1,61 @@
+<%- include('../template/header_up') %>
+<script type="text/javascript" src="/static/js/daily.js" async></script>
+<%- include('../template/header_low') %>
+<div class="section row">
+    <form method="POST" action="" onsubmit="return false" class="col s12 m6 l4">
+        <div class="row">
+            <div class="col s12 input-form">
+                <select id="countrySelect">
+                    <% countries.forEach((country, index) => { %>
+                    <option value="<%= index %>" <% if(index == 0) { %>selected<% } %>><%= country %></option>
+                    <% }); %> 
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- Charts section -->
+<div class="section row">
+    <div class="col s12 m4">
+        <canvas width="600" height="400" id="chartConfirm"></canvas>
+    </div>
+    <div class="col s12 m4">
+        <canvas width="600" height="400" id="chartDead"></canvas>
+    </div>
+    <div class="col s12 m4">
+        <canvas width="600" height="400" id="chartRecov"></canvas>
+    </div>
+</div>
+<!-- Calculations section -->
+<div class="section">
+    <table class="stripped">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Confirmados</th>
+                <th>Muertos</th>
+                <th>Recuperados</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Media</td>
+                <td id="avePos">0</td>
+                <td id="aveDead">0</td>
+                <td id="aveRec">0</td>
+            </tr>
+            <tr>
+                <td>Desviación típica</td>
+                <td id="desPos">0</td>
+                <td id="desDead">0</td>
+                <td id="desRec">0</td>
+            </tr>
+            <tr>
+                <td>Predicción</td>
+                <td id="lsqPos">0</td>
+                <td id="lsqDead">0</td>
+                <td id="lsqRec">0</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
