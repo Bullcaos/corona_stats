@@ -96,27 +96,36 @@ function printHistory(history, hours) {
     }
 }
 
+function filterData(jsonReponse) {
+    let values = [];
+    for(let i = 0; i < jsonReponse.length; i++) {
+        if(i > 0) {
+            const date = new Date(jsonReponse[i].date);
+            const prevDate = new Date(values[values.length-1].date);
+            if(date.getUTCDate() == prevDate.getUTCDate()) continue;
+        }
+        values.push(jsonReponse[i]);
+    }
+    return values;
+}
+
 function loadData() {
     if(chartInfected == null || chartDead == null || chartRecovered == null || countries.length == 0) return;
     const selection = countries[document.getElementById('countrySelect').value];
     let ajax = new XMLHttpRequest();
-    ajax.open('GET', '/history/country/day/' + selection, true);
+    ajax.open('GET', '/history/country/week/' + selection, true);
     ajax.onreadystatechange = () => {
         if(ajax.readyState == 4 && ajax.status == 200) {
             if(ajax.getResponseHeader('Content-Type').includes('application/json')) {
-                const data = JSON.parse(ajax.responseText);
+                const data = filterData(JSON.parse(ajax.responseText));
                 let hours = [], confirmed = [], dead = [], recovered = [];
-                for(let i = 0; i < data.length; i++) {
+                for(let i = data.length-1; i >= 0; i--) {
                     const dateData = new Date(data[i].date);
-                    hours.push(dateData.getHours().toString().padStart(2, '0') + ':' + dateData.getMinutes().toString().padStart(2, '0'));
+                    hours.push(dateData.getUTCDate().toString().padStart(2, '0') + '/' + (dateData.getUTCMonth()+1).toString().padStart(2, '0'));
                     confirmed.push(data[i].confirmed);
                     dead.push(data[i].dead);
                     recovered.push(data[i].recovered);
                 }
-                confirmed = confirmed.reverse();
-                dead = dead.reverse();
-                recovered = recovered.reverse();
-                hours = hours.reverse();
                 const averages = average(confirmed, dead, recovered);
                 const deviations = deviation(confirmed, dead, recovered, averages);
                 const predictions = prediction(confirmed, dead, recovered);
@@ -183,11 +192,8 @@ function init() {
                 borderColor: 'rgba(0,0,255,1)',
                 backgroundColor: 'rgba(0,0,255,0.4)',
                 fill: 'origin',
-                lineTension: 0
+                lineTension: 0.4
             }]
-        },
-        options: {
-            title: { text: 'Confirmados' }
         }
     });
     chartDead = new Chart(document.getElementById('chartDead').getContext('2d'), {
@@ -200,7 +206,7 @@ function init() {
                 borderColor: 'rgba(255,0,0,1)',
                 backgroundColor: 'rgba(255,0,0,0.4)',
                 fill: 'origin',
-                lineTension: 0
+                lineTension: 0.4
             }]
         },
         options: {
@@ -217,7 +223,7 @@ function init() {
                 borderColor: 'rgba(0,255,0,1)',
                 backgroundColor: 'rgba(0,255,0,0.4)',
                 fill: 'origin',
-                lineTension: 0
+                lineTension: 0.4
             }]
         },
         options: {

@@ -36,6 +36,22 @@ app.get('/country/day', async (req, res) => {
     });
 });
 
+app.get('/country/week', async (req, res) => {
+    let data = fsys.readFileSync(tracker.COUNTRIES_FILE);
+    res.render('website/weekly', {
+        title: 'Estadística semanal',
+        countries: JSON.parse(data)
+    });
+});
+
+app.get('/country/month', async (req, res) => {
+    let data = fsys.readFileSync(tracker.COUNTRIES_FILE);
+    res.render('website/monthly', {
+        title: 'Estadística mensual',
+        countries: JSON.parse(data)
+    });
+});
+
 app.get('/list/countries', async (req, res) => {
     res.append('Content-Type', 'application/json');
     res.send(fsys.readFileSync(tracker.COUNTRIES_FILE));
@@ -55,10 +71,10 @@ app.get('/history/country/:period/:country', async (req, res) => {
     let minDate = new Date(Date.now());
     switch(req.params.period) {
         case 'day':
-            minDate.setUTCHours(minDate.getUTCHours() - 24);
+            minDate.setUTCDate(minDate.getUTCDate() - 2);
             break;
         case 'week':
-            minDate.setUTCHours(minDate.getUTCHours() - (7 * 24));
+            minDate.setUTCDate(minDate.getUTCDate() - 8);
             break;
         case 'month':
             minDate.setUTCMonth(minDate.getUTCMonth() - 1);
