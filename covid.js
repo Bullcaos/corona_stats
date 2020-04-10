@@ -11,6 +11,11 @@ const fsys = require('fs');
 
 app.use('/static', express.static('static'));
 app.set('view engine', 'ejs');
+app.use((req, res, next) => {
+    res.removeHeader('X-Powered-By');
+    res.removeHeader('Server');
+    next();
+});
 
 app.get('/', async (req, res) => {
     let data = fsys.readFileSync(tracker.COUNTRIES_FILE);
