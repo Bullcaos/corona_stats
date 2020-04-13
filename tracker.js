@@ -12,20 +12,30 @@ function downloadData(country) {
                 data += buff;
             });
             resp.on('end', () => {
-                let json = JSON.parse(data);
+                if(resp.statusCode != 200) {
+                    reject('Status ' + resp.statusCode + ': ' + resp.statusMessage);
+                    return;
+                }
+                let json = null;
+                try {
+                    json = JSON.parse(data);
+                } catch(error) {
+                    reject(error);
+                    return;
+                }
                 for(let i = 0; json.code == 200 && i < json.data.length; i++) {
                     if(json.data[i].location.localeCompare(country) == 0) {
                         success(json.data[i]);
-                        return true;
+                        return;
                     }
                 }
                 reject('Not found');
-                return true;
+                return;
             })
-        }).on('error', ()=>{console.log('error')});
+        }).on('error', ()=>{console.log('Can\'t connect to server')});
     });
 }
-//country, dead, recovered, infected, date
+
 async function updateDatabase() {
     const fcontent = files.readFileSync(COUNTRIES_FILE);
     const countries = JSON.parse(fcontent);
