@@ -67,7 +67,8 @@ function leastSquares(values) {
     pend = pend_up / pend_down;
     base = sumy - (pend * sumx);
     base = base / values.length;
-    return ((pend * values.length) + base);
+    const residual = values[values.length-1] - ((pend * values.length-1) + base);
+    return ((pend * values.length) + base) + residual;
 }
 
 function prediction (infected, dead, recovered) {
