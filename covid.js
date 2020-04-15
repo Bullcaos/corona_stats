@@ -9,7 +9,11 @@ var tracker = require('./tracker');
 var db = require('./database');
 const fsys = require('fs');
 
-app.use('/static', express.static('static'));
+if(process.argv[2] != 'proxy') {
+    var http = require('http').createServer(app);
+    app.use('/static', express.static('static'));
+}
+
 app.set('view engine', 'ejs');
 app.use((req, res, next) => {
     res.removeHeader('X-Powered-By');
@@ -98,10 +102,20 @@ app.get('/history/country/:period/:country', async (req, res) => {
     }
 });
 
-app.listen(process.argv[3], () => {
-    console.log('Server started');
-    tracker.updateDatabase();
-    setInterval(() => {
+if(process.argv[2] != 'proxy') {
+    http.listen(process.argv[3], process.argv[2], () => {
+        console.log('External server started');
         tracker.updateDatabase();
-    }, 1.2E6);
-});
+        setInterval(() => {
+            tracker.updateDatabase();
+        }, 1.2E6);
+    });
+} else {
+    app.listen(process.argv[3], () => {
+        console.log('Internal server started (no static file is being served)');
+        tracker.updateDatabase();
+        setInterval(() => {
+            tracker.updateDatabase();
+        }, 1.2E6);
+    });
+}
