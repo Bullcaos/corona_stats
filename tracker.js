@@ -6,7 +6,7 @@ var db = require('./database.js');
 
 function downloadData(country) {
     return new Promise((success, reject) => {
-        http.get('https://www.trackcorona.live/api/countries/', (resp) => {
+        http.get('https://www.trackcorona.live/api/countries', (resp) => {
             let data = '';
             resp.on('data', (buff) => {
                 data += buff;
