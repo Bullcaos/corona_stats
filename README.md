@@ -5,7 +5,7 @@ statistical calculations over them.
 Due to project needs, this is project is currently only available in spanish.
 
 ## Requirements
-* Reverse proxy as front-end (like [nginx](https://nginx.org/), for example).
+* Reverse proxy as front-end (like [nginx](https://nginx.org/), for example) for proxy mode.
 * NodeJS (coded on version 13.12.0)
 * NPM (for installing dependencies)
 
