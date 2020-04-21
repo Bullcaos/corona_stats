@@ -20,9 +20,12 @@ function updateNumbers(infected, dead, recovered) {
     document.getElementById('totalDead').innerText = dead[pos];
     document.getElementById('totalRecovered').innerText = recovered[pos];
     if(pos > 0) {
-        document.getElementById('partialConfirmed').innerText = '+' + (infected[pos] - infected[pos-1]);
-        document.getElementById('partialDead').innerText = '+' + (dead[pos] - dead[pos-1]);
-        document.getElementById('partialRecovered').innerText = '+' + (recovered[pos] - recovered[pos-1]);
+        const diffConf = infected[pos] - infected[pos-1];
+        document.getElementById('partialConfirmed').innerText = (diffConf > 0 ? '+' : '') + diffConf;
+        const diffDead = dead[pos] - dead[pos-1];
+        document.getElementById('partialDead').innerText = (diffDead > 0 ? '+' : '') + diffDead;
+        const diffRecv = recovered[pos] - recovered[pos-1];
+        document.getElementById('partialRecovered').innerText = (diffRecv > 0 ? '+' : '') + diffRecv;
     }
 }
 
