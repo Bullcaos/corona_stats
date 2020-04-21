@@ -18,7 +18,7 @@ Due to project needs, this is project is currently only available in spanish.
 ## Future upgrades
 - [x] Option for running express http server in standalone mode (no proxy required)
 - [ ] English version of the UI
-- [ ] Dockerfile (maybe)
+- [x] Dockerfile (maybe)
 
 ## Special thanks
 * ExpressJS project https://expressjs.com/
