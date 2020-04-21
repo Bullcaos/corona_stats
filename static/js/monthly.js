@@ -54,22 +54,35 @@ function deviation(infected, dead, recovered, averages) {
     return result;
 }
 
+function getDaysThisMonth() {
+    const date = new Date();
+    return new Date(date.getUTCFullYear()+1900, date.getUTCMonth()+1, 0);
+}
+
 function leastSquares(values) {
     let pend = 0, base = 0, pend_up = 0, pend_down = 0;
     let sumx = 0, sumy = 0, sumxy = 0, sumx2 = 0;
     for(let i = 0; i < values.length; i++) {
-        sumx += i;
-        sumx2 += Math.pow(i, 2);
+        if(i == values.length-1) {
+            const date = new Date();
+            const factor = date.getUTCDate() / getDaysThisMonth();
+            sumx += (i * factor);
+            sumx2 += Math.pow((i * factor), 2);
+            sumxy += values[i] * (i * factor);
+        } else {
+            sumx += i;
+            sumx2 += Math.pow(i, 2);
+            sumxy += values[i] * i;
+        }
         sumy += values[i];
-        sumxy += values[i] * i;
     }
     pend_up = (values.length * sumxy) - (sumx * sumy);
     pend_down = (values.length * sumx2) - Math.pow(sumx, 2);
     pend = pend_up / pend_down;
     base = sumy - (pend * sumx);
     base = base / values.length;
-    const residual = values[values.length-1] - ((pend * values.length-1) + base);
-    return ((pend * values.length) + base) + residual;
+    const residual = values[values.length-2] - ((pend * (values.length-2)) + base);
+    return ((pend * (values.length-1)) + base) + residual;
 }
 
 function prediction (infected, dead, recovered) {
