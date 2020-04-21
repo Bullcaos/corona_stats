@@ -36,7 +36,6 @@ function loadChartData() {
     ajax.open('GET', '/history/country/week/' + countries[selection], true);
     ajax.onreadystatechange = () => {
         if(ajax.readyState == 4 && ajax.status == 200) {
-            console.log();
             if(ajax.getResponseHeader('Content-Type').includes('application/json')) {
                 const filtResp = filterData(JSON.parse(ajax.responseText));
                 let chartLabels = [];
@@ -67,7 +66,6 @@ function loadChartData() {
         }
     }
     ajax.send();
-    console.log('sent');
 }
 
 function retrieveCountries() {
