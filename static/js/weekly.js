@@ -72,10 +72,11 @@ function leastSquares(values) {
     }
     pend_up = (values.length * sumxy) - (sumx * sumy);
     pend_down = (values.length * sumx2) - Math.pow(sumx, 2);
+    if(pend_down == 0) pend_down = 1;
     pend = pend_up / pend_down;
     base = sumy - (pend * sumx);
     base = base / values.length;
-    const residual = values[values.length-2] - ((pend * (values.length-2)) + base);
+    const residual = values.length > 2 ? values[values.length-2] - ((pend * (values.length-2)) + base) : 0;
     return ((pend * (values.length-1)) + base) + residual;
 }
 
